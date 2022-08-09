@@ -1,6 +1,7 @@
 #include <Wire.h>
 #include <avr/pgmspace.h>
 #include <LiquidCrystal.h>
+#include <LiquidCrystal_I2C.h>
 
 // data structures
 struct Node {
@@ -3236,14 +3237,19 @@ const int buzzer = 11;
 char testWordBuffer[16];
 const int START_i = 1;
 const int END_i = 0;
-
+const bool I2C = True;
 // Make sure to update these to match how you've wired your pins.
 // pinout on LCD [RS, EN, D4, D5, D6, D7];
 // pin nums LCD  [ 4,  6, 11, 12, 13, 14];
 // Shield Shield [RS, EN, D4, D5, D6, D7];
 // Spark Core    [D3, D5, D2, D4, D7, D8];
 
+if(I2C){
+LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+}else{
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7); //modified this  for correct pins on UNO
+
+}
 char line1Buffer[16] = "";
 char line2Buffer[16] = "";
 
@@ -3456,12 +3462,7 @@ void setup() {
   //generatePoem();
   //printmem();
 }
-// ============== Robot states
-/*
- * CYRUS quotes from It's a small world
- *  I do many things.
- *  
- */
+
 
  void sleep(){
   scrollWrite("I'm taking a nap", "");
@@ -3476,5 +3477,5 @@ void setup() {
 void loop() {
   playMusic(16);
   generatePoem();
-  sleep();
+  //sleep();
 }
